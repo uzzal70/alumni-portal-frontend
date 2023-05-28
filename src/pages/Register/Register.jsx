@@ -3,18 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import Chip from "../../components/Chip/Chip";
 import "./register.css";
+import axios from "axios";
 
 const Register = () => {
 	const navigate = useNavigate();
-	const [user, setUser] = useState({
-		fname: "",
-		lname: "",
-		email: "",
-		username: "",
-		password: "",
-		confirmPassword: "",
-		role: "",
-	});
+	const [user, setUser] = useState({});
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setUser({
@@ -22,19 +15,59 @@ const Register = () => {
 			[name]: value,
 		});
 	};
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		console.log(user);
-		setUser({
-			fname: "",
-			lname: "",
-			email: "",
-			username: "",
-			password: "",
-			confirmPassword: "",
-			role: "",
-		});
-	};
+	const userData = {
+		FirstName: user.fname,
+		LastName: user.lname,
+		PhoneNumber: user.phone,
+		Email: user.email,
+		Password: user.password
+	  };
+
+
+	//   const handleSubmit = async (e) => {
+	// 	e.preventDefault();
+
+	// 	try {
+	// 	  const response = await fetch('https://alumni-portal-production-4ea2.up.railway.app/admin/registration', {
+	// 		method: 'POST',
+	// 		headers: {
+	// 		  'Content-Type': 'application/json'
+	// 		},
+	// 		body: JSON.stringify(userData)
+	// 	  });
+	  
+	// 	  if (response.ok) {
+	// 		const data = await response.json();
+	// 		console.log('Registration successful:', data);
+	// 	  } else {
+	// 		throw new Error('Registration failed');
+	// 	  }
+	// 	} catch (error) {
+	// 	  console.error('Registration failed:', error);
+	// 	}
+	//   };
+
+	const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post('https://alumni-portal-production-4ea2.up.railway.app/admin/registration', userData);
+
+    // Check the response status code
+    if (response.status === 200) {
+      const data = response.data;
+      // Handle successful registration response
+      console.log('Registration successful:', data);
+      // Update the UI or perform additional actions
+    } else {
+      throw new Error('Registration failed');
+    }
+  } catch (error) {
+    // Handle registration error
+    console.error('Registration failed:', error);
+    // Update the UI or perform additional actions
+  }
+};
 	const roles = [
 		{
 			title: "Student",
@@ -73,6 +106,8 @@ const Register = () => {
 								<span className="material-icons">person</span>
 							</label>
 							<input
+														required
+
 								type="text"
 								name="fname"
 								value={user.fname}
@@ -83,6 +118,8 @@ const Register = () => {
 								<span className="material-icons">person</span>
 							</label>
 							<input
+														required
+
 								type="text"
 								name="lname"
 								value={user.lname}
@@ -95,6 +132,8 @@ const Register = () => {
 								<span className="material-icons">email</span>
 							</label>
 							<input
+														required
+
 								type="email"
 								name="email"
 								value={user.email}
@@ -107,11 +146,12 @@ const Register = () => {
 								</span>
 							</label>
 							<input
+							
 								type="text"
-								name="username"
-								value={user.username}
+								name="phone"
+								value={user.phone}
 								onChange={handleChange}
-								placeholder="Username"
+								placeholder="Phone Number"
 							/>
 						</div>
 						<div className="register-form-group">
@@ -119,6 +159,8 @@ const Register = () => {
 								<span className="material-icons">lock</span>
 							</label>
 							<input
+														required
+
 								type="password"
 								name="password"
 								value={user.password}
@@ -129,6 +171,7 @@ const Register = () => {
 								<span className="material-icons">key</span>
 							</label>
 							<input
+							// required
 								type="password"
 								name="confirmPassword"
 								value={user.confirmPassword}

@@ -8,10 +8,7 @@ import GlobalContext from "../../components/Context/GloablContext";
 
 const Login = () => {
 	const { isAuthenticated, setIsAuthenticated } = useContext(GlobalContext);
-	const [user, setUser] = useState({
-		username: "",
-		password: "",
-	});
+	const [user, setUser] = useState({});
 	const navigate = useNavigate();
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -31,6 +28,29 @@ const Login = () => {
 		localStorage.setItem("isAuthenticated", true);
 		navigate("/dashboard");
 	};
+
+	// const handleSubmit = async (e) => {
+	// 		e.preventDefault();
+	
+	// 		try {
+	// 		  const response = await fetch('https://alumni-portal-production-4ea2.up.railway.app/admin/registration', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 			  'Content-Type': 'application/json'
+	// 			},
+	// 			body: JSON.stringify(userData)
+	// 		  });
+		  
+	// 		  if (response.ok) {
+	// 			const data = await response.json();
+	// 			console.log('Registration successful:', data);
+	// 		  } else {
+	// 			throw new Error('Registration failed');
+	// 		  }
+	// 		} catch (error) {
+	// 		  console.error('Registration failed:', error);
+	// 		}
+	// 	  };
 	useEffect(() => {
 		if (isAuthenticated) navigate("/dashboard");
 	}, [isAuthenticated, navigate]);
